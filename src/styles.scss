@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .bg-primary {
+    background: var(--mdc-filled-button-container-color);
+  }
+
+  .text-primary {
+    color: var(--mdc-filled-button-container-color);
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+* {
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 12px !important;
+}
+
+mat-sidenav-content:not(.bg-white) {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 60, 92, 0.05) 10%,
+    rgba(247, 177, 91, 0.083) 40%,
+    rgba(35, 189, 171, 0.052) 50% 50%,
+    rgba(154, 91, 255, 0.078) 100%
+  );
+}
