@@ -12,8 +12,8 @@ import { DrawerComponent } from './components/drawer.component';
   imports: [RouterOutlet, HeaderComponent, DrawerComponent, MatSidenavModule],
   template: `
     <mat-sidenav-container class="h-full min-h-full">
-      <mat-sidenav mode="over" opened="{{opened}}" (closed)="opened = false">
-        <app-drawer />
+      <mat-sidenav mode="over" opened="{{opened}}" (closed)="opened = false" class="max-w-[80vw]">
+        <app-drawer (close)="opened = false"/>
       </mat-sidenav>
 
       <mat-sidenav-content class="h-full min-h-full">
