@@ -9,11 +9,12 @@ import { SelectComponent } from '../../components/select.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
+import { PaginationComponent } from '../../components/pagination.component';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [MatIconModule, RouterLink, ReactiveFormsModule, FormsModule, MatSlideToggleModule, MatInputModule, SelectComponent, MatButtonModule, MatProgressSpinnerModule, NgClass],
+  imports: [MatIconModule, RouterLink, ReactiveFormsModule, FormsModule, MatSlideToggleModule, MatInputModule, SelectComponent, MatButtonModule, MatProgressSpinnerModule, NgClass, PaginationComponent],
   template: `
     <button mat-flat-button class="md:!hidden !absolute -top-[50px] left-4 w-fit" [ngClass]="{'!hidden': visableFilters}" (click)="visableFilters = true;">
       <span>فیلتر ها</span>
@@ -110,43 +111,7 @@ import { MatInputModule } from '@angular/material/input';
         </div>
 
         <!-- pagination -->
-        @if(last != 1) {
-          <div class="flex flex-col items-center justify-center gap-2">
-            <div class="flex flex-nowrap items-center gap-1">
-              <button (click)="page = last; timeoutSearch()" mat-flat-button class="!bg-gray-200 !text-black !rounded-lg">
-                آخرین ({{last}})
-              </button>
-
-              @if(page != last) {
-                <button (click)="page = page + 1; timeoutSearch()" mat-flat-button class="!bg-gray-200 !text-black !rounded-lg">
-                  {{ page + 1 }}
-                </button>
-              }
-
-              <button mat-flat-button class="!rounded-lg">
-                {{ page }}
-              </button>
-
-              @if(page != 1) {
-                <button (click)="page = page - 1; timeoutSearch()" mat-flat-button class="!bg-gray-200 !text-black !rounded-lg">
-                  {{ page - 1 }}
-                </button>
-              }
-
-              <button (click)="page = 1; timeoutSearch()" mat-flat-button class="!bg-gray-200 !text-black !rounded-lg">
-                اولین
-              </button>
-            </div>
-
-            <div class="flex flex-nowrap items-center gap-1">
-                <input type="number" min="1" [max]="last" [(ngModel)]="page" class="text-center border border-black/75 rounded-lg px-2 w-[80px] h-[42px]"/>
-              <button mat-flat-button class="!rounded-lg" (click)="timeoutSearch()">
-                برو
-              </button>
-            </div>
-          </div>
-        }
-      </div>
+        <app-pagination [last]="last" [(page)]="page" (pageChange)="timeoutSearch()"/>
     </div>
 
     <div class="w-full min-h-[100px]"></div>
@@ -154,12 +119,6 @@ import { MatInputModule } from '@angular/material/input';
   host: {
     class: 'flex flex-col relative'
   },
-  styles: `
-    button:not([mat-icon-button]) {
-      min-width: unset !important;
-      padding: 0 14px !important;
-    }
-  `
 })
 export class SearchComponent {
   public searching: boolean = false;
