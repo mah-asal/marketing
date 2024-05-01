@@ -44,14 +44,14 @@ import { MatIconModule } from '@angular/material/icon';
                 <img ngSrc="/assets/icons/icon-72x72.png" alt="Mahasal app logo" width="36" height="36" />
               </a>
 
-              <a href="{{appService.pwaEndpoint}}" class="flex flex-nowrap items-center gap-2 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
+              <!-- <a href="{{appService.pwaEndpoint}}" class="flex flex-nowrap items-center gap-2 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
                 <span class="text-sm text-gray-600">ورود به</span>
                 <strong class="font-bold text-lg">وب اپ</strong>
 
                 <div class="flex-1"></div>
 
                 <mat-icon>launch</mat-icon>
-              </a>
+              </a> -->
             </div>
 
             <div class="flex flex-wrap gap-2">

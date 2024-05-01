@@ -28,9 +28,9 @@ import { AppService } from '../services/app.service';
         </a>        
       }
 
-      <a href="{{appService.pwaEndpoint}}" mat-flat-button class="!hidden md:!inline-flex">
+      <!-- <a href="{{appService.pwaEndpoint}}" mat-flat-button class="!hidden md:!inline-flex">
         ورود به وب اپ
-      </a>
+      </a> -->
   `,
   host: {
     class: 'min-h-[64px] flex flex-nowrap items-center gap-1 container mx-auto px-4'
