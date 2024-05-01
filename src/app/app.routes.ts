@@ -24,5 +24,18 @@ export const routes: Routes = [
     {
         path: 'profile/:id',
         loadComponent: async () => (await import('./routes/profile/one.component')).OneComponent
-    }
+    },
+    {
+        path: 'blog',
+        loadComponent: async () => (await import('./routes/blog/search.component')).SearchComponent,
+        title: 'ماه عسل | وبلاگ'
+    },
+    {
+        path: 'blog/:id',
+        loadComponent: async () => (await import('./routes/blog/one.component')).OneComponent
+    },
+    {
+        path: 'blog/:id/:slug',
+        loadComponent: async () => (await import('./routes/blog/one.component')).OneComponent
+    },
 ];
