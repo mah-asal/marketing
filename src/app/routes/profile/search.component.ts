@@ -65,6 +65,10 @@ import { PaginationComponent } from '../../components/pagination.component';
             <span>{{took}} ثانیه</span>
           </div>
         }
+
+        <button (click)="visableFilters = false" mat-flat-button class="!fixed bottom-4 left-4 right-4 md:!hidden">
+          اعمال فیلتر
+        </button>
       </form>
 
       <div class="col-span-8 md:col-span-5 lg:col-span-6 flex flex-col gap-2">
