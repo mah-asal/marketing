@@ -1,0 +1,14 @@
+[
+    {
+      "relation": [
+        "delegate_permission/common.handle_all_urls"
+      ],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.mahasal.app.mahasal",
+        "sha256_cert_fingerprints": [
+          "08:82:03:D6:01:29:7E:90:41:E8:3F:33:04:B2:7D:EE:F4:21:18:4B:61:2E:82:91:FA:A1:83:C8:34:70:B4:A4"
+        ]
+      }
+    }
+  ]
