@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
-  public pwaEndpoint: string = 'https://tv-92.com';
+  public pwaEndpoint: string = '';
+  public pwaVisabable: boolean = false;
 
   public links: ILink[] = [
     {
@@ -24,6 +26,18 @@ export class AppService {
     },
   ];
 
+  constructor(
+    private httpService: HttpService
+  ) {
+    this.httpService.request({
+      method: 'GET',
+      url: 'https://raw.githubusercontent.com/mah-asal/config/main/config.json'
+    }).subscribe({
+      next: (res) => {
+        this.pwaEndpoint = res['public'];
+      }
+    })
+  }
 }
 
 interface ILink {

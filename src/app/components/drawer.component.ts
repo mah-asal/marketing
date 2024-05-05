@@ -16,9 +16,11 @@ import { MatButtonModule } from '@angular/material/button';
       <img src="/assets/logo-white.svg" alt="Mahasal white color logo" class="w-32 mx-auto opacity-80" />
     </div>
 
-    <!-- <a (click)="close.emit()" href="{{appService.pwaEndpoint}}" mat-flat-button class="m-4">
-      ورود به وب اپ
-    </a> -->
+    @if(appService.pwaVisabable) {
+      <a (click)="close.emit()" href="{{appService.pwaEndpoint}}" mat-flat-button class="m-4">
+        ورود به وب اپ
+      </a>
+    }
 
     <a (click)="close.emit()" routerLink="/" mat-button class="mx-4 mt-1 !justify-start">
       <mat-icon class="text-green-500"> home </mat-icon>

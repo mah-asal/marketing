@@ -45,14 +45,16 @@ import { HttpService } from '../services/http.service';
                 <img ngSrc="/assets/icons/icon-72x72.png" alt="Mahasal app logo" width="36" height="36" />
               </a>
 
-              <!-- <a href="{{appService.pwaEndpoint}}" class="flex flex-nowrap items-center gap-2 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
-                <span class="text-sm text-gray-600">ورود به</span>
-                <strong class="font-bold text-lg">وب اپ</strong>
-
-                <div class="flex-1"></div>
-
-                <mat-icon>launch</mat-icon>
-              </a> -->
+              @if(appService.pwaVisabable) {
+                <a href="{{appService.pwaEndpoint}}" class="flex flex-nowrap items-center gap-2 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
+                  <span class="text-sm text-gray-600">ورود به</span>
+                  <strong class="font-bold text-lg">وب اپ</strong>
+                  
+                  <div class="flex-1"></div>
+                  
+                  <mat-icon>launch</mat-icon>
+                </a>
+              }
             </div>
 
             <div class="flex -md:flex-col md:flex-wrap -md:items-center gap-2">
@@ -152,8 +154,8 @@ export class HomeComponent {
       path: '/api/v1/call/api.v1.profile.search?limit=1'
     }).subscribe({
       next: (res) => {
-        if(res['status']) {
-          this.count = new Number( res['meta']['total']).toLocaleString('fa-IR');
+        if (res['status']) {
+          this.count = new Number(res['meta']['total']).toLocaleString('fa-IR');
         }
       }
     })
