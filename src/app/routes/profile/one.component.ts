@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpService } from '../../services/http.service';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-one',
@@ -9,7 +10,7 @@ import { HttpService } from '../../services/http.service';
   imports: [MatIconModule],
   template: `
     @if(data) {
-      <img src="{{data['avatar']}}" alt="{{data['fullname']}}" class="rounded-full md:rounded-xl md:row-span-2 w-32 h-32 md:w-full md:h-80 object-cover object-center mx-auto" />
+      <img src="{{data['avatar']}}" alt="{{data['fullname']}}" class="rounded-full md:rounded-xl md:row-span-2 w-32 h-32 md:w-full md:h-80 object-cover object-top mx-auto" />
 
       <div class="flex flex-col gap-4 md:col-span-3 lg:col-span-4 xl:col-span-5">
         <div class="flex flex-nowrap items-center gap-1">
@@ -64,10 +65,12 @@ import { HttpService } from '../../services/http.service';
               <strong class="text-lg"> {{data['marriageType']}} </strong>
             </div>
 
-            <div class="bg-white p-4 h-fit flex flex-col gap-2 justify-end rounded-xl shadow-sm">
-              <span class="text-xs">وضعیت تاهل</span>
-              <strong class="text-lg"> {{data['maritalStatus']}} </strong>
-            </div>
+            @if(appService.mode == 'dating') {
+              <div class="bg-white p-4 h-fit flex flex-col gap-2 justify-end rounded-xl shadow-sm">
+                <span class="text-xs">وضعیت تاهل</span>
+                <strong class="text-lg"> {{data['maritalStatus']}} </strong>
+              </div>
+            }
 
             <div class="bg-white p-4 h-fit flex flex-col gap-2 justify-end rounded-xl shadow-sm">
               <span class="text-xs">سبک زندگی</span>
@@ -86,7 +89,11 @@ import { HttpService } from '../../services/http.service';
           </div>
 
           <div class="bg-white p-4 h-fit flex flex-col gap-2 justify-end rounded-xl shadow-sm col-span-4 xl:col-span-1">
+          @if(appService.mode == 'dating') {
             <span class="text-xs">درباره من و همسر من</span>
+          } @else {
+            <span class="text-xs">درباره من</span>
+          }
             <p> {{ data['aboutMe'] }} </p>
           </div>
         </div>
@@ -102,7 +109,8 @@ export class OneComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private httpService: HttpService
+    private httpService: HttpService,
+    public appService: AppService
   ) { }
 
   ngOnInit() {

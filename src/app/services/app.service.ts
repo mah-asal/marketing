@@ -8,6 +8,8 @@ export class AppService {
   public pwaEndpoint: string = '';
   public pwaVisabable: boolean = false;
 
+  public mode: 'social' | 'dating' = 'social';
+
   public links: ILink[] = [
     {
       icon: 'phone',

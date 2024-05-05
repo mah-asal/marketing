@@ -19,3 +19,14 @@ html {
 .input-density {
   @include mat.input-density(-2);
 }
+
+.mat-mdc-snack-bar-container {
+  margin: unset !important;
+  padding: 8px !important;
+  position: fixed !important;
+  z-index: 10 !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+  font-family: unset !important;
+}

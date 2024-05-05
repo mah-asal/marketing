@@ -6,11 +6,11 @@ import { filter, map } from 'rxjs';
   providedIn: 'root',
 })
 export class HttpService {
-  private endpoint: string = "https://edge.tv-92.com";
+  public readonly endpoint: string = "https://edge.tv-92.com";
 
   constructor(
     private http: HttpClient,
-  ) {}
+  ) { }
 
 
   public request<T = any>(param: RequestParam) {
@@ -18,7 +18,7 @@ export class HttpService {
       param.url ??
       `${param.endpoint ?? this.endpoint}${param.path}`;
 
-    let headers: any = param.header ?? { };
+    let headers: any = param.header ?? {};
 
     return this.http
       .request<T>(

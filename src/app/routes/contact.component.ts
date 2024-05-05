@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,14 +8,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpEventType } from '@angular/common/http';
-import { NgClass } from '@angular/common';
+import { DOCUMENT, NgClass } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
   imports: [NgClass, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule],
   template: `
-    <div class="flex flex-col gap-4 h-fit mt-10">
+    <div class="flex flex-col gap-4 h-fit mt-10 prose lg:prose-xl">
       <p>
         راه های ارتباطی شما عزیزان جهت در میان گذاشتن سوالات، مشکلات فنی، پیشنهادات و انتقادات با تیم ماه عسل به شرح زیر می باشد :
       </p>
@@ -26,7 +27,7 @@ import { NgClass } from '@angular/common';
         فرمایید.
       </p>
 
-      <ul class="list-disc mx-8 flex flex-col gap-4">
+      <ul>
         <li>
           تکمیل و ارسال فرم زیر (پاسخ به ایمیل وارد شده ارسال خواهد شد)
         </li>
@@ -75,7 +76,7 @@ import { NgClass } from '@angular/common';
       </ul>
     </div>
 
-    <form [formGroup]="form"  class="flex flex-col p-10 rounded-xl bg-gradient-to-tl from-white to-white/40 backdrop-blur h-fit shadow transition-all hover:shadow-xl">
+    <form [formGroup]="form"  class="flex flex-col p-8 md:p-10 rounded-xl bg-gradient-to-tl from-white to-white/40 backdrop-blur h-fit shadow transition-all hover:shadow-xl">
       <div class="grid md:grid-cols-2 gap-4">
         <mat-form-field appearance="outline">
           <mat-label>دریافت کننده</mat-label>
@@ -106,7 +107,7 @@ import { NgClass } from '@angular/common';
       </mat-form-field>
 
       <div class="border border-black/60 relative rounded-xl h-[240px] flex flex-col items-center justify-center transition-all hover:border-black/80">
-        <div class="flex flex-col items-center justify-center cursor-pointer w-full h-full" (click)="input.click()">
+        <div class="flex flex-col items-center justify-center cursor-pointer w-full h-full" (click)="makeInputFile()">
           @if(image.length == 0) {
             <mat-icon class="!w-[64px] !h-[64px] !text-[64px]">photo</mat-icon>
             <br />
@@ -132,8 +133,6 @@ import { NgClass } from '@angular/common';
             </span>
           </div>
         }
-
-        <input #input (change)="onInputFileChange($event)" type="file" accept="image/*" id="file" class="hidden"/>
       </div>
 
       <button (click)="submit()" mat-flat-button color="primary" class="!rounded-xl mt-4">
@@ -162,7 +161,15 @@ export class ContactComponent {
     return this.form.get('image')!.value!.toString();
   }
 
-  constructor(private httpService: HttpService, private cdr: ChangeDetectorRef, private snackbar: MatSnackBar) { }
+  private uploadSubscribtion!: Subscription;
+
+  constructor(
+    @Inject(DOCUMENT)
+    private document: Document,
+    private httpService: HttpService,
+    private cdr: ChangeDetectorRef,
+    private snackbar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.fetchRecivers();
@@ -200,6 +207,8 @@ export class ContactComponent {
             image: '',
           });
 
+          this.unsetImage();
+
           this.snackbar.open('پیام شما با موفقیت ارسال شد', '', {
             direction: 'rtl',
             duration: 3000,
@@ -212,13 +221,39 @@ export class ContactComponent {
   public unsetImage() {
     this.form.get('image')?.setValue('');
     this.uploading = -1;
+
+    if (this.uploadSubscribtion) {
+      this.uploadSubscribtion.unsubscribe();
+    }
   }
 
-  public onInputFileChange(event: Event) {
+  public makeInputFile() {
+    const input = this.document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+
+    input.onchange = (event) => {
+      this.onInputFileChange(event);
+    }
+
+    input.click();
+  }
+
+  private onInputFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
 
-    if (target.files) {
+    if (target.files && target.files.length == 1) {
       const file = target.files![0];
+
+      if (!file.type.startsWith('image')) {
+        this.snackbar.open('لطفا یک تصویر انتخاب کنید', '', {
+          direction: 'rtl',
+          duration: 3000,
+        });
+        return;
+      }
+
+      this.unsetImage();
 
       // 1. generate image base64
       const reader = new FileReader();
@@ -234,26 +269,38 @@ export class ContactComponent {
 
       formData.append('file', file);
 
-      this.httpService.request({
+      this.uploadSubscribtion = this.httpService.request({
         method: 'POST',
         path: '/api/v1/upload',
         data: formData,
-        reportProgress: true
+        reportProgress: true,
       }).subscribe({
         next: (event) => {
           if (event.type == HttpEventType.UploadProgress) {
             const uploaded = event.loaded;
 
-            this.uploading = Math.ceil((uploaded * file.size) / 100);
+            this.uploading = Math.min(Math.ceil((100 * uploaded) / file.size), 100);
           }
 
           if (event.type == HttpEventType.Response) {
             const res = event.body;
 
-            this.form.get('image')?.setValue(res['data']['url']);
+            let url: string = res['data']['url'];
+
+            if (!url.startsWith('http')) {
+              url = this.httpService.endpoint + '/uploads/' + url;
+            }
+
+            this.form.get('image')?.setValue(url);
 
             this.uploading = 100;
           }
+        },
+        error: () => {
+          this.snackbar.open('خطا در آپلود تصویر رخ داد', '', {
+            direction: 'rtl',
+            duration: 3000,
+          });
         }
       })
     }

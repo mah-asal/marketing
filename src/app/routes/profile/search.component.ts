@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { PaginationComponent } from '../../components/pagination.component';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-search',
@@ -45,7 +46,9 @@ import { PaginationComponent } from '../../components/pagination.component';
         
         <app-select formControlName="marital" groupKey="MaritalStatus" label="وضعیت تاهل" [data]="[{text: 'فرقی ندارد', value: '-1'}]" />
 
-        <app-select formControlName="marriageType" groupKey="MarriageType" label="نوع ارتباط" [data]="[{text: 'فرقی ندارد', value: '-1'}]" />
+        @if(appService.mode == 'dating') {
+          <app-select formControlName="marriageType" groupKey="MarriageType" label="نوع ازدواج" [data]="[{text: 'فرقی ندارد', value: '-1'}]" />
+        }
 
         <div class="grid grid-cols-2 gap-4">
           <app-select formControlName="minAge" groupKey="Age" label="از سن" [data]="[{text: 'از هر سنی', value: '-1'}]" />
@@ -152,6 +155,7 @@ export class SearchComponent {
     @Inject(DOCUMENT)
     private document: Document,
     private httpService: HttpService,
+    public appService: AppService
   ) { }
 
   ngOnInit() {

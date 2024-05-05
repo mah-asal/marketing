@@ -8,7 +8,7 @@ import { HttpService } from '../services/http.service';
   imports: [],
   template: ``,
   host: {
-    class: 'flex flex-col container mx-auto my-10'
+    class: 'flex flex-col container mx-auto my-10 p-4 prose lg:prose-xl'
   },
 })
 export class PrivacyComponent {
