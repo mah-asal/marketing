@@ -77,29 +77,29 @@ import { HttpService } from '../services/http.service';
       </div>
     </section>
     
-    <section class="grid grid-cols-2 md:grid-cols-4 container mx-auto my-10 p-4">
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-y-10 sm:gap-y-20 container mx-auto my-10 p-4">
       <div class="flex flex-col items-center justify-center gap-4">
-        <span class="text-gray-500">تعداد کاربران ما</span>
+        <span class="-sm:text-sm text-gray-500">تعداد کاربران ما</span>
 
-        <strong class="text-4xl">{{count}} نفر</strong>
+        <strong class="text-2xl sm:text-4xl">{{count}} نفر</strong>
       </div>
 
       <div class="flex flex-col items-center justify-center gap-4">
-        <span class="text-gray-500">تعداد کاربران فعال ما</span>
+        <span class="-sm:text-sm text-gray-500">تعداد کاربران فعال ما</span>
 
-        <strong class="text-4xl">+۱۰۰۰ نفر</strong>
+        <strong class="text-2xl sm:text-4xl">+۱۰۰۰ نفر</strong>
       </div>
 
       <div class="flex flex-col items-center justify-center gap-4">
-        <span class="text-gray-500">سایقه فعالیت ما</span>
+        <span class="-sm:text-sm text-gray-500">سایقه فعالیت ما</span>
 
-        <strong class="text-4xl">۳ سال</strong>
+        <strong class="text-2xl sm:text-4xl">۳ سال</strong>
       </div>
 
       <div class="flex flex-col items-center justify-center gap-4">
-        <span class="text-gray-500">تعداد پشتیبان های ما</span>
+        <span class="-sm:text-sm text-gray-500">تعداد پشتیبان های ما</span>
 
-        <strong class="text-4xl">۳۲ نفر</strong>
+        <strong class="text-2xl sm:text-4xl">۳۲ نفر</strong>
       </div>
     </section>
 
