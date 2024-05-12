@@ -57,7 +57,7 @@ import { AppService } from '../../services/app.service';
         </div>
 
         <mat-slide-toggle formControlName="image">
-          <span class="px-4">نمایش کابران عکس دار</span>
+          <span class="px-4">نمایش کاربران عکس دار</span>
         </mat-slide-toggle>
 
         @if(total != 0) {
@@ -130,7 +130,7 @@ import { AppService } from '../../services/app.service';
 export class SearchComponent {
   public searching: boolean = false;
   public page: number = 1;
-  public limit: number = 20;
+  public limit: number = 30;
   public last: number = 1;
   public total: number = 0;
   public took: number = 0;
