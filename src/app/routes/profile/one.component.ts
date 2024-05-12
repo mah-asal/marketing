@@ -1,14 +1,49 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpService } from '../../services/http.service';
 import { AppService } from '../../services/app.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-one',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, MatButtonModule, RouterLink],
   template: `
+    @if(error) {
+      <div class="flex flex-col items-center justify-center text-center h-[50vh] col-span-1 md:col-span-4 lg:col-span-5 xl:col-span-6">
+        <strong class="font-bold text-2xl m-2">
+          @switch (error) {
+            @case ("UNSUBSCRIBED") {
+              این کاربر از عضویت خود انصراف داده است اما احتمال بازگشت مجدد او وجود دارد
+            }
+            @case ("SUSSPENDED") {
+              این کاربر به دلیل نقض قوانین مسدود شده است
+            }
+            @case ("SUSSPENDED_BY_ADMIN") {
+              این کاربر به دلیل نقض قوانین توسط مدیریت مسدود شده است
+            }
+            @case ("BLOCKED_BY_ADMIN") {
+              این کاربر توسط مدیریت بلاک شده است
+            }
+            @case ("LEAVE_FOR_EVER") {
+              این کاربر حساب کاربری خودش را حذف کرده است
+            }
+          }
+        </strong>
+
+        <a routerLink="/profile/search" mat-stroked-button class="mt-10">
+          <mat-icon>
+            search
+          </mat-icon>
+
+          <span>
+            بازگشت به جستجو
+          </span>
+        </a>
+      </div>
+    }
+
     @if(data) {
       <img src="{{data['avatar']}}" alt="{{data['fullname']}}" class="rounded-full md:rounded-xl md:row-span-2 w-32 h-32 md:w-full md:h-80 object-cover object-top mx-auto" />
 
@@ -106,6 +141,7 @@ import { AppService } from '../../services/app.service';
 })
 export class OneComponent {
   public data: any;
+  public error?: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -128,6 +164,7 @@ export class OneComponent {
     }).subscribe({
       next: (res) => {
         this.data = res['data']['profile'];
+        this.error = res['data']['error'];
       }
     })
   }
