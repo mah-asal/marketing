@@ -76,7 +76,7 @@ import { Subscription } from 'rxjs';
       </ul>
     </div>
 
-    <form [formGroup]="form"  class="flex flex-col p-8 md:p-10 rounded-xl bg-gradient-to-tl from-white to-white/40 backdrop-blur h-fit shadow transition-all hover:shadow-xl">
+    <form [formGroup]="form" class="flex flex-col md:p-10 rounded-xl md:bg-gradient-to-tl from-white to-white/40 backdrop-blur h-fit md:shadow transition-all md:hover:shadow-xl">
       <div class="grid md:grid-cols-2 gap-4">
         <mat-form-field appearance="outline">
           <mat-label>دریافت کننده</mat-label>
@@ -98,7 +98,7 @@ import { Subscription } from 'rxjs';
       
       <mat-form-field appearance="outline">
         <mat-label>آدرس ایمیل</mat-label>
-        <input type='email' matInput formControlName='email' placeholder="پاسخ به این ایمیل ارسال می شود">
+        <input type='email' dir='ltr' matInput formControlName='email' placeholder="پاسخ به این ایمیل ارسال می شود" class="placeholder:text-right">
       </mat-form-field>
       
       <mat-form-field appearance="outline">
