@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DOCUMENT, NgClass } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -42,7 +42,7 @@ import { AppService } from '../../services/app.service';
 
         <app-select formControlName="province" groupKey="province" label="استان" [data]="[{text: 'همه استان ها', value: '-1'}]" />
 
-        <app-select formControlName="province" groupKey="city" label="شهر" [data]="[{text: 'همه شهر ها', value: '-1'}]" [parent]="form.get('province')!.value!" />
+        <app-select formControlName="city" groupKey="city" label="شهر" [data]="[{text: 'همه شهر ها', value: '-1'}]" [parent]="form.get('province')!.value!" />
         
         <app-select formControlName="marital" groupKey="MaritalStatus" label="وضعیت تاهل" [data]="[{text: 'فرقی ندارد', value: '-1'}]" />
 
@@ -75,6 +75,12 @@ import { AppService } from '../../services/app.service';
       </form>
 
       <div class="col-span-8 md:col-span-5 lg:col-span-6 flex flex-col gap-2">
+        @if(took != 0 && total == 0) {
+          <div class="flex flex-col items-center justify-center h-128">
+            <strong>نتیجه ای یافت نشد</strong>
+          </div>
+        }
+
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
           @for (item of data; track $index) {
             <a routerLink="/profile/{{item.id}}" class="flex flex-col gap-1 overflow-hidden rounded-lg relative p-4 bg-white transition-all hover:shadow-xl hover:z-10">
@@ -130,7 +136,7 @@ import { AppService } from '../../services/app.service';
 export class SearchComponent {
   public searching: boolean = false;
   public page: number = 1;
-  public limit: number = 30;
+  public limit: number = 12;
   public last: number = 1;
   public total: number = 0;
   public took: number = 0;
@@ -146,7 +152,7 @@ export class SearchComponent {
     'marriageType': new FormControl('-1'),
     'minAge': new FormControl('-1'),
     'maxAge': new FormControl('-1'),
-    'image': new FormControl(false),
+    'image': new FormControl('false'),
   });
 
   private timeout: any;
@@ -155,13 +161,19 @@ export class SearchComponent {
     @Inject(DOCUMENT)
     private document: Document,
     private httpService: HttpService,
-    public appService: AppService
+    public appService: AppService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.document.querySelector('mat-sidenav-content')!.classList.add('bg-white')
 
-    this.search();
+    this.searchFromQueries();
+
+    this.activatedRoute.queryParams.subscribe(() => {
+      this.searchFromQueries();
+    });
 
     this.form.valueChanges.subscribe(() => {
       this.timeoutSearch();
@@ -180,7 +192,7 @@ export class SearchComponent {
       'marriageType': '-1',
       'minAge': '-1',
       'maxAge': '-1',
-      'image': false,
+      'image': 'false',
     });
   }
 
@@ -190,6 +202,25 @@ export class SearchComponent {
     this.timeout = setTimeout(() => {
       this.search();
     }, 100);
+  }
+
+  private searchFromQueries() {
+    setTimeout(() => {
+      const queries = this.activatedRoute.snapshot.queryParams;
+
+
+      const page = parseInt(queries['page']) ?? 1;
+
+      if (isNaN(page)) {
+        this.page = 1;
+      } else {
+        this.page = page;
+      }
+
+      this.form.patchValue(queries);
+
+      this.timeoutSearch();
+    }, 0);
   }
 
   private search() {
@@ -206,7 +237,7 @@ export class SearchComponent {
     }
 
     if (filter['city'] != null && filter['city'] != '-1') {
-      filters['City'] = filters['city'];
+      filters['City'] = filter['city'];
     }
 
     if (filter['minAge'] != null && filter['minAge'] != '-1') {
@@ -226,7 +257,7 @@ export class SearchComponent {
     }
 
     if (filter['image'] != null) {
-      filters['HasImage'] = filter['image'] == true ? '1' : '0';
+      filters['HasImage'] = filter['image'] == 'true' ? '1' : '0';
     }
 
     this.httpService.request({
@@ -236,7 +267,7 @@ export class SearchComponent {
         page: this.page,
         limit: this.limit,
         filters,
-      },
+      }
     }).subscribe({
       next: (res) => {
         this.searching = false;
@@ -248,12 +279,14 @@ export class SearchComponent {
 
           this.data = res['data'];
 
-          if (this.document.querySelector('mat-sidenav-content') && this.document.querySelector('mat-sidenav-content')!.scrollTo instanceof Function) {
-            this.document.querySelector('mat-sidenav-content')!.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            })
-          }
+          this.router.navigate(['/profile/search'], { queryParams: { ...this.form.value, page: this.page } });
+
+          // if (this.document.querySelector('mat-sidenav-content') && this.document.querySelector('mat-sidenav-content')!.scrollTo instanceof Function) {
+          //   this.document.querySelector('mat-sidenav-content')!.scrollTo({
+          //     top: 0,
+          //     behavior: 'smooth'
+          //   })
+          // }
         }
       }
     })
