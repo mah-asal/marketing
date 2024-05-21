@@ -188,7 +188,7 @@ export class ContactComponent {
         path: '/api/v1/call/api.v1.proxy.request',
         data: {
           "method": "POST",
-          "path": "/AdminMessage/Create",
+          "path": "/Home/AboutUsImageInExternalServere",
           "params": {
             "MessageType": value['reciver'],
             "Title": value['title'],
