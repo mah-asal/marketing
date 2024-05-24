@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
-import { HttpService } from '../services/http.service';
 import { MatSelectModule } from '@angular/material/select';
+import { HttpService } from '../services/http.service';
 
 @Component({
   selector: 'app-select',
@@ -22,10 +21,10 @@ import { MatSelectModule } from '@angular/material/select';
 
       <select 
         [(ngModel)]="value"
-        (ngModelChange)="change()"
+        (ngModelChange)="emitChange()"
         matNativeControl
       >
-        @for (item of data; track $index) {
+        @for (item of items; track $index) {
           <option [value]="item.value">{{item.text}}</option>
         }
       </select>
@@ -51,6 +50,11 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Input()
   public data: any[] = [];
+
+  @Output()
+  public change = new EventEmitter<string>();
+
+  public items: any[] = [];
 
   private parent: string = '';
 
@@ -87,11 +91,16 @@ export class SelectComponent implements ControlValueAccessor {
     this.fetch();
   }
 
-  public change() {
+  public emitChange() {
     this.onChange(this.value);
+    this.change.emit(this.value);
   }
 
   private fetch() {
+    this.items = [
+      ...this.data
+    ];
+
     if (this.parent == '-1') return;
 
     this.httpService.request({
@@ -108,7 +117,7 @@ export class SelectComponent implements ControlValueAccessor {
             data = data.filter((item) => item['parent'].toString() == this.parent)
           }
 
-          this.data = this.data.concat(data);
+          this.items = this.items.concat(data);
         }
       }
     })
