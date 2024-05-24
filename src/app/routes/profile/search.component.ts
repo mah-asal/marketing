@@ -40,7 +40,7 @@ import { AppService } from '../../services/app.service';
           <button type="button" (click)="resetFilters()" mat-flat-button color="warn">حذف فیلتر ها</button>
         </div>
 
-        <app-select formControlName="province" groupKey="province" label="استان" [data]="[{text: 'همه استان ها', value: '-1'}]" />
+        <app-select formControlName="province" groupKey="province" label="استان" (change)="form.get('city')!.setValue('-1')" [data]="[{text: 'همه استان ها', value: '-1'}]" />
 
         <app-select formControlName="city" groupKey="city" label="شهر" [data]="[{text: 'همه شهر ها', value: '-1'}]" [parent]="form.get('province')!.value!" />
         
@@ -76,8 +76,10 @@ import { AppService } from '../../services/app.service';
 
       <div class="col-span-8 md:col-span-5 lg:col-span-6 flex flex-col gap-2">
         @if(took != 0 && total == 0) {
-          <div class="flex flex-col items-center justify-center h-128">
-            <strong>نتیجه ای یافت نشد</strong>
+          <div class="flex flex-col items-center justify-center gap-10 h-96">
+            <i class="material-icons text-red-500 !w-24 !h-24 text-8xl">priority_high</i>
+
+            <strong class="text-xl">نتیجه ای یافت نشد</strong>
           </div>
         }
 
@@ -152,7 +154,7 @@ export class SearchComponent {
     'marriageType': new FormControl('-1'),
     'minAge': new FormControl('-1'),
     'maxAge': new FormControl('-1'),
-    'image': new FormControl('false'),
+    'image': new FormControl(false),
   });
 
   private timeout: any;
@@ -192,7 +194,7 @@ export class SearchComponent {
       'marriageType': '-1',
       'minAge': '-1',
       'maxAge': '-1',
-      'image': 'false',
+      'image': false
     });
   }
 
@@ -217,7 +219,10 @@ export class SearchComponent {
         this.page = page;
       }
 
-      this.form.patchValue(queries);
+      this.form.patchValue({
+        ...queries,
+        image: queries['image'] == 'true' ? true : false,
+      });
 
       this.timeoutSearch();
     }, 0);
@@ -257,7 +262,7 @@ export class SearchComponent {
     }
 
     if (filter['image'] != null) {
-      filters['HasImage'] = filter['image'] == 'true' ? '1' : '0';
+      filters['HasImage'] = filter['image'] == true ? '1' : '0';
     }
 
     this.httpService.request({
