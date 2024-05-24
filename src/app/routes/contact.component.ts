@@ -198,6 +198,8 @@ export class ContactComponent {
           }
         }
       }).subscribe((res) => {
+        this.form.enable();
+
         if (res['status']) {
           this.form.patchValue({
             reciver: '',
