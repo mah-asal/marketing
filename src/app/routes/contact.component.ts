@@ -106,7 +106,7 @@ import { Subscription } from 'rxjs';
         <textarea matInput formControlName='message'></textarea>
       </mat-form-field>
 
-      <div class="border border-black/60 relative rounded-xl h-[240px] flex flex-col items-center justify-center transition-all hover:border-black/80">
+      <div [class.border-gray-300]="form.disabled" class="border border-black/60 relative rounded-xl h-[240px] flex flex-col items-center justify-center transition-all hover:border-black/80">
         <div class="flex flex-col items-center justify-center cursor-pointer w-full h-full" (click)="makeInputFile()">
           @if(image.length == 0) {
             <mat-icon class="!w-[64px] !h-[64px] !text-[64px]">photo</mat-icon>
@@ -120,7 +120,7 @@ import { Subscription } from 'rxjs';
 
         @if(uploading != -1) {
           <div class="absolute bottom-4 flex flex-nowrap items-center gap-2">
-            <button class="px-4 py-2 rounded-full z-10 text-xs bg-red-500 text-white"  (click)="unsetImage()">
+            <button [disabled]="form.disabled" [class.bg-gray-300]="form.disabled" [class.text-black]="form.disabled" class="px-4 py-2 rounded-full z-10 text-xs bg-red-500 text-white" (click)="unsetImage()">
               لغو
             </button>
             
@@ -135,7 +135,7 @@ import { Subscription } from 'rxjs';
         }
       </div>
 
-      <button (click)="submit()" mat-flat-button color="primary" class="!rounded-xl mt-4">
+      <button [disabled]="form.disabled" [class.bg-gray-300]="form.disabled" [class.text-black]="form.disabled" (click)="submit()" mat-flat-button color="primary" class="!rounded-xl mt-4">
         <span>ارسال پیام</span>
       </button>
     </form>
@@ -161,7 +161,7 @@ export class ContactComponent {
     return this.form.get('image')!.value!.toString();
   }
 
-  private uploadSubscribtion!: Subscription;
+  private uploadSubscribtion?: Subscription;
 
   constructor(
     @Inject(DOCUMENT)
@@ -176,6 +176,8 @@ export class ContactComponent {
   }
 
   public submit() {
+    if (this.uploadSubscribtion != undefined) return;
+
     this.form.markAllAsTouched();
 
     if (this.form.valid && this.form.enabled) {
@@ -296,6 +298,8 @@ export class ContactComponent {
             this.form.get('image')?.setValue(url);
 
             this.uploading = 100;
+
+            this.uploadSubscribtion = undefined;
           }
         },
         error: () => {
