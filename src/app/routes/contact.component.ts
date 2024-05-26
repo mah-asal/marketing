@@ -191,7 +191,7 @@ export class ContactComponent {
         data: {
           "method": "POST",
           "path": "/Home/AboutUsImageInExternalServere",
-          "params": {
+          "data": {
             "MessageType": value['reciver'],
             "Title": value['title'],
             "Message": value['message'],
