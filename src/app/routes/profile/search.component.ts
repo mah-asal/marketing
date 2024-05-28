@@ -178,7 +178,7 @@ export class SearchComponent {
     });
 
     this.form.valueChanges.subscribe(() => {
-      this.timeoutSearch();
+      this.makeQueries(1);
     })
   }
 
@@ -284,7 +284,7 @@ export class SearchComponent {
 
           this.data = res['data'];
 
-          this.router.navigate(['/profile/search'], { queryParams: { ...this.form.value, page: this.page } });
+          this.makeQueries();
 
           // if (this.document.querySelector('mat-sidenav-content') && this.document.querySelector('mat-sidenav-content')!.scrollTo instanceof Function) {
           //   this.document.querySelector('mat-sidenav-content')!.scrollTo({
@@ -295,5 +295,9 @@ export class SearchComponent {
         }
       }
     })
+  }
+
+  private makeQueries(page?: number) {
+    this.router.navigate(['/profile/search'], { queryParams: { ...this.form.value, page: page ?? this.page } });
   }
 }

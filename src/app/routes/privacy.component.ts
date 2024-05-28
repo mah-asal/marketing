@@ -1,6 +1,7 @@
 import { Component, HostBinding } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpService } from '../services/http.service';
+import { AppService } from '../services/app.service';
 
 @Component({
   selector: 'app-privacy',
@@ -17,7 +18,8 @@ export class PrivacyComponent {
 
   constructor(
     private httpService: HttpService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private appService: AppService
   ) { }
 
   ngOnInit() {
@@ -37,7 +39,9 @@ export class PrivacyComponent {
         if (res['status']) {
           let content = res['data']['data'];
 
-          content = content.replace(new RegExp('همسریابی', 'g'), 'شبکه اجتماعی');
+          if (this.appService.mode == 'social') {
+            content = content.replace(new RegExp('همسریابی', 'g'), 'شبکه اجتماعی');
+          }
 
           this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(content);
         }

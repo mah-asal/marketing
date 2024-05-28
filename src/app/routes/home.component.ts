@@ -36,7 +36,7 @@ import { HttpService } from '../services/http.service';
 
           <div class="flex flex-col -md:items-center gap-2">
             <div class="flex -md:flex-col md:flex-wrap -md:items-center gap-2">
-              <a href="/assets/mahasal.apk" download="mahasal.apk" class="flex flex-nowrap items-center gap-6 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
+              <a href="{{appService.apkDirectDownloadUrl}}" download="mahasal.apk" class="flex flex-nowrap items-center gap-6 w-[222px] bg-white rounded-lg px-4 py-2 border transition-all active:scale-95">
                 <div class="flex flex-col text-start flex-1">
                   <span class="text-sm text-gray-600">دانلود</span>
                   <strong class="font-bold text-lg">مستقیم</strong>
@@ -111,8 +111,12 @@ import { HttpService } from '../services/http.service';
           <svg width="36" height="36" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.4255 1.83301C6.36285 1.83301 2.25879 5.93706 2.25879 10.9997C2.25879 16.0623 6.36285 20.1663 11.4255 20.1663C16.4881 20.1663 20.5921 16.0623 20.5921 10.9997C20.5921 5.93706 16.4881 1.83301 11.4255 1.83301ZM10.7173 7.85462L8.87012 9.32557C8.09516 9.9427 7.70768 10.2513 7.78331 10.5958L7.78733 10.6129C7.8735 10.9553 8.36467 11.0869 9.347 11.3501C9.89288 11.4963 10.1658 11.5695 10.2939 11.7764L10.3005 11.7873C10.424 11.9967 10.3537 12.2589 10.2132 12.7834L10.1764 12.9204C9.78676 14.3746 9.59193 15.1017 9.96715 15.3365C10.3424 15.5713 10.9394 15.0959 12.1334 14.1451L13.9805 12.6742C14.7555 12.057 15.1429 11.7485 15.0673 11.404L15.0633 11.3869C14.9771 11.0445 14.486 10.9129 13.5036 10.6497C12.9577 10.5034 12.6848 10.4303 12.5568 10.2234L12.5502 10.2125C12.4267 10.0031 12.4969 9.74085 12.6375 9.21636L12.6742 9.07925C13.0638 7.6251 13.2587 6.89802 12.8834 6.66321C12.5082 6.4284 11.9112 6.90381 10.7173 7.85462Z" fill="#FF3C5E"></path></svg>
           <h3 class="font-bold text-2xl"> سایت ماه عسل </h3>
         </div>
-
-        <p class="text-gray-700 p-4"> سایت ماه عسل یک شبکه اجتماعی آنلاین با محیطی جذاب و حرفه ای است ، که دارای امکاناتی مانند تماس صوتی ، تماس تصویری ، ارسال عکس ، ارسال موزیک ، ارسال فیلم و ارسال لوکیشن می باشد . این سایت به کسانی که قصد ازدواج دایم یا موقت دارند کمک میکند که همسر ایدآل خود را در کوتاه ترین زمان </p>
+        
+        @if(appService.mode == 'dating') {
+          <p class="text-gray-700 p-4"> سایت ماه عسل یک شبکه اجتماعی آنلاین با محیطی جذاب و حرفه ای است ، که دارای امکاناتی مانند تماس صوتی ، تماس تصویری ، ارسال عکس ، ارسال موزیک ، ارسال فیلم و ارسال لوکیشن می باشد . این سایت به کسانی که قصد ازدواج دایم یا موقت دارند کمک میکند که همسر ایدآل خود را در کوتاه ترین زمان </p>
+        } @else {
+          <p class="text-gray-700 p-4">  سایت شبکه اجتماعی ماه عسل یک شبکه اجتماعی آنلاین با محیطی جذاب و حرفه ای است ، که دارای امکاناتی مانند تماس صوتی ، تماس تصویری ، ارسال عکس ، ارسال موزیک ، ارسال فیلم و ارسال لوکیشن می باشد . این سایت به کسانی که دنبال دوست های جدید هستند کمک میکند که دوستان خود را در کوتاه ترین زمان ممکن بصورت آنلاین پیدا کنند .  </p>
+        }
       </div>
     </section>
 
@@ -140,7 +144,7 @@ import { HttpService } from '../services/http.service';
     </section>
   `,
   host: {
-    class: 'flex flex-col'
+    class: 'flex flex-col z-0'
   },
 })
 export class HomeComponent {

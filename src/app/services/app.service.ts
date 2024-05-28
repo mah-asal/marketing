@@ -8,6 +8,10 @@ export class AppService {
   public pwaEndpoint: string = '';
   public pwaVisabable: boolean = false;
 
+  public apkDirectDownloadUrl: string = '';
+
+  public showDownloadApkAnyWhere: boolean = true;
+
   public mode: 'social' | 'dating' = 'social';
 
   public links: ILink[] = [
@@ -37,6 +41,7 @@ export class AppService {
     }).subscribe({
       next: (res) => {
         this.pwaEndpoint = res['public'];
+        this.apkDirectDownloadUrl = res['apk'][this.mode]['direct'];
       }
     })
   }

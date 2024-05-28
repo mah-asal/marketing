@@ -15,6 +15,13 @@ import { MatButtonModule } from '@angular/material/button';
     <div class="absolute top-8 left-0 right-0 flex items-center justify-center">
       <img src="/assets/logo-white.svg" alt="Mahasal white color logo" class="w-32 mx-auto opacity-80" />
     </div>
+    
+    @if(appService.showDownloadApkAnyWhere) {
+      <a (click)="close.emit()" routerLink="/" mat-flat-button color="primary" class="m-4">
+        <mat-icon>download</mat-icon>
+        <span>دانلود اپلیکیشن</span>
+      </a>
+    }
 
     @if(appService.pwaVisabable) {
       <a (click)="close.emit()" href="{{appService.pwaEndpoint}}" mat-flat-button class="m-4">
@@ -37,7 +44,6 @@ import { MatButtonModule } from '@angular/material/button';
         </span>
       </a>        
     }
-
   `,
   host: {
     class: 'w-full h-screen flex flex-col relative'
