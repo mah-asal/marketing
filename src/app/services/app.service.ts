@@ -20,11 +20,11 @@ export class AppService {
       text: 'تماس با ما',
       path: '/contact'
     },
-    {
-      icon: 'gavel',
-      text: 'قوانین و مقررات',
-      path: '/privacy'
-    },
+    // {
+    //   icon: 'gavel',
+    //   text: 'قوانین و مقررات',
+    //   path: '/privacy'
+    // },
     {
       icon: 'search',
       text: 'جستجو کاربران',
@@ -41,7 +41,7 @@ export class AppService {
     }).subscribe({
       next: (res) => {
         this.pwaEndpoint = res['public'];
-        this.apkDirectDownloadUrl = res['apk'][this.mode]['direct'];
+        this.apkDirectDownloadUrl = res['apk']['dating']['direct'];
       }
     })
   }
