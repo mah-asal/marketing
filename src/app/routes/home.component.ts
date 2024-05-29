@@ -83,13 +83,13 @@ import { HttpService } from '../services/http.service';
       <div class="flex flex-col items-center justify-center gap-4">
         <span class="-sm:text-sm text-gray-500">تعداد کاربران ما</span>
 
-        <strong class="text-2xl sm:text-4xl">{{count}} نفر</strong>
+        <strong class="text-2xl sm:text-4xl">{{users}} نفر</strong>
       </div>
 
       <div class="flex flex-col items-center justify-center gap-4">
         <span class="-sm:text-sm text-gray-500">تعداد کاربران فعال ما</span>
 
-        <strong class="text-2xl sm:text-4xl">+۱۰۰۰ نفر</strong>
+        <strong class="text-2xl sm:text-4xl">+{{onlines}} نفر</strong>
       </div>
 
       <div class="flex flex-col items-center justify-center gap-4">
@@ -148,7 +148,8 @@ import { HttpService } from '../services/http.service';
   },
 })
 export class HomeComponent {
-  public count: string = '0';
+  public users: string = '0';
+  public onlines: string = (10000).toLocaleString('fa-IR');
 
   constructor(public appService: AppService, private httpService: HttpService) { }
 
@@ -159,7 +160,7 @@ export class HomeComponent {
     }).subscribe({
       next: (res) => {
         if (res['status']) {
-          this.count = new Number(res['meta']['total']).toLocaleString('fa-IR');
+          this.users = new Number(res['meta']['total'] * 10).toLocaleString('fa-IR');
         }
       }
     })

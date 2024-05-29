@@ -126,7 +126,7 @@ import { AppService } from '../../services/app.service';
         </div>
 
         <!-- pagination -->
-        <app-pagination [last]="last" [(page)]="page" (pageChange)="timeoutSearch()"/>
+        <app-pagination [last]="last" [(page)]="page" (pageChange)="timeoutMakeQueries()"/>
     </div>
 
     <div class="w-full min-h-[100px]"></div>
@@ -206,6 +206,14 @@ export class SearchComponent {
     }, 100);
   }
 
+  public timeoutMakeQueries() {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(() => {
+      this.makeQueries();
+    }, 100);
+  }
+
   private searchFromQueries() {
     setTimeout(() => {
       const queries = this.activatedRoute.snapshot.queryParams;
@@ -219,10 +227,14 @@ export class SearchComponent {
         this.page = page;
       }
 
-      this.form.patchValue({
+      const value = {
         ...queries,
         image: queries['image'] == 'true' ? true : false,
-      });
+      };
+
+      if (JSON.stringify(value) != JSON.stringify({...this.form.value, page: this.page.toString()})) {
+        this.form.patchValue(value);
+      }
 
       this.timeoutSearch();
     }, 0);

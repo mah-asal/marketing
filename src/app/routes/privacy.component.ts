@@ -39,10 +39,6 @@ export class PrivacyComponent {
         if (res['status']) {
           let content = res['data']['data'];
 
-          if (this.appService.mode == 'social') {
-            content = content.replace(new RegExp('همسریابی', 'g'), 'شبکه اجتماعی');
-          }
-
           this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(content);
         }
       }
