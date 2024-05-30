@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "serve:ssr:mahasal-marketing": "node dist/mahasal-marketing/server/server.mjs"
+    "serve:ssr": "node dist/mahasal-marketing/server/server.mjs"
   },
   "private": true,
   "dependencies": {
