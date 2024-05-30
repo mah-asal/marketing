@@ -46,8 +46,8 @@ export class AppComponent {
   ) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      const { inapp, token } = this.activatedRoute.snapshot.queryParams;
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const { inapp, token } = params;
 
       if (inapp == 'yes' || inapp == 'true' || inapp == '1') {
         this.appService.showDownloadApkAnyWhere = false;
@@ -66,6 +66,6 @@ export class AppComponent {
           }
         }
       }
-    }, 0);
+    });
   }
 }
