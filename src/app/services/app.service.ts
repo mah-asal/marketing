@@ -6,7 +6,7 @@ import { HttpService } from './http.service';
 })
 export class AppService {
   public pwaEndpoint: string = '';
-  public pwaVisabable: boolean = false;
+  public pwaVisabable: boolean = true;
 
   public apkDirectDownloadUrl: string = '';
 
