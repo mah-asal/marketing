@@ -16,14 +16,14 @@ import { MatButtonModule } from '@angular/material/button';
       <img src="/assets/logo-white.svg" alt="Mahasal white color logo" class="w-32 mx-auto opacity-80" />
     </div>
     
-    <a (click)="close.emit()" href="{{appService.apkDirectDownloadUrl}}" target="_blank" download="mahasal.apk" mat-flat-button color="primary" class="m-4">
+    <a (click)="close.emit()" href="{{appService.apkDirectDownloadUrl}}" target="_blank" download="mahasal.apk" mat-flat-button color="primary" class="mx-4 my-1">
       <mat-icon>download</mat-icon>
       <span>دانلود اپلیکیشن</span>
     </a>
     
 
     @if(appService.pwaVisabable) {
-      <a (click)="close.emit()" href="{{appService.pwaEndpoint}}" mat-flat-button class="m-4">
+      <a (click)="close.emit()" href="{{appService.pwaEndpoint}}" mat-flat-button class="mx-4 my-1">
         ورود به وب اپ
       </a>
     }
