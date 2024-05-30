@@ -59,7 +59,11 @@ export class AppComponent {
         }
 
         if (token) {
-          window.localStorage.setItem('#mahasal/token', token);
+          if (token.length == 0) {
+            window.localStorage.removeItem('#mahasal/token');
+          } else {
+            window.localStorage.setItem('#mahasal/token', token);
+          }
         }
       }
     }, 0);
