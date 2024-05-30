@@ -47,7 +47,7 @@ export class AppComponent {
 
   ngOnInit() {
     setTimeout(() => {
-      const { inapp } = this.activatedRoute.snapshot.queryParams;
+      const { inapp, token } = this.activatedRoute.snapshot.queryParams;
 
       if (inapp == 'yes' || inapp == 'true' || inapp == '1') {
         this.appService.showDownloadApkAnyWhere = false;
@@ -56,6 +56,10 @@ export class AppComponent {
       if (isPlatformBrowser(this.platfromId)) {
         if (window.localStorage.getItem('#mahasal/hide-download-card')) {
           this.appService.showDownloadApkAnyWhere = false;
+        }
+
+        if (token) {
+          window.localStorage.setItem('#mahasal/token', token);
         }
       }
     }, 0);

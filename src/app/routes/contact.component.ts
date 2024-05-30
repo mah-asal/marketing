@@ -185,6 +185,14 @@ export class ContactComponent {
 
       const value = this.form.value;
 
+      const token = window.localStorage.getItem('#mahasal/token');
+
+      let header: any = {};
+
+      if (token) {
+        header['bearer'] = token;
+      }
+
       this.httpService.request({
         method: 'POST',
         path: '/api/v1/call/api.v1.proxy.request',
@@ -197,8 +205,9 @@ export class ContactComponent {
             "Message": value['message'],
             "Email": value['email'],
             "url": value['image']
-          }
-        }
+          },
+        },
+        header,
       }).subscribe((res) => {
         this.form.enable();
 
