@@ -22,7 +22,7 @@ import { AppService } from '../services/app.service';
         دیگر نشان نده
       </button>
 
-      <a routerLink="/" mat-flat-button color="primary">
+      <a href="{{appService.apkDirectDownloadUrl}}" target="_blank" download="mahasal.apk" mat-flat-button color="primary">
         دانلود کنید
       </a>
     </div>

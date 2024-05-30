@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
       <img src="/assets/logo-white.svg" alt="Mahasal white color logo" class="w-32 mx-auto opacity-80" />
     </div>
     
-    <a (click)="close.emit()" routerLink="/" mat-flat-button color="primary" class="m-4">
+    <a (click)="close.emit()" href="{{appService.apkDirectDownloadUrl}}" target="_blank" download="mahasal.apk" mat-flat-button color="primary" class="m-4">
       <mat-icon>download</mat-icon>
       <span>دانلود اپلیکیشن</span>
     </a>
